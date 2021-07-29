@@ -10,10 +10,10 @@ const QuestionPrompts = {
         'Enter the name of the new Department',
     ],
     roles: [
-        'view roles',
+        'View roles',
     ],
     employees: [
-        'view employees',
+        'View employees',
     ]
 }
 
@@ -31,11 +31,11 @@ const ListChoices = {
     roles: [
         'view roles',
         'add a role',
-        'update a role',
     ],
     employees: [
         'view employees',
         'add an employees',
+        'update a employee role',
     ]
 }
 
@@ -95,7 +95,6 @@ function departments() {
     })
 }
 
-/* add a department */
 function departmentAdd() {
     inquirer.prompt({
         type: 'input',
@@ -121,12 +120,38 @@ function roles() {
                 queries.selectRolesTable();
                 break;
             case ListChoices.roles[1]:
+                roleAdd();
                 break;
             case ListChoices.roles[2]:
+                roleUpdate();
                 break;
             default:
                 console.log("error in switch case index.js", value.name);
         }
+    })
+}
+
+//title, salary, department_id
+function roleAdd() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter role title',
+            name: 'title',
+        },
+        {
+            type: 'input',
+            message: 'Enter role salary',
+            name: 'salary',
+        },
+        {
+            type: 'input',
+            message: 'Enter role department id',
+            name: 'department_id',
+        },
+    ]).then((value) => {
+        queries.insertRolesTable(value.title, value.salary, value.department_id);
+        main();
     })
 }
 
@@ -144,10 +169,61 @@ function employees() {
                 queries.selectEmployeesTable();
                 break;
             case ListChoices.employees[1]:
+                employeeAdd();
+                break;
+            case ListChoices.employees[1]:
+                employeeUpdate();
                 break;
             default:
                 console.log("error in switch case index.js", value.name);
         }
+    })
+}
+
+function employeeAdd() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter employee title',
+            name: 'title',
+        },
+        {
+            type: 'input',
+            message: 'Enter employee salary',
+            name: 'salary',
+        },
+        {
+            type: 'input',
+            message: 'Enter employee department id',
+            name: 'department_id',
+        },
+        {
+            type: 'input',
+            message: 'Enter manager id',
+            name: 'manager_id',
+        },
+    ]).then((value) => {
+        queries.insertEmployeeTable(value.title, value.salary, value.department_id, value.manager_id);
+        main();
+    })
+}
+
+/* I am prompted to select an employee to update and their new role and this information is updated in the database  */
+function employeeUpdate() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter employee ID to update',
+            name: 'employee_id',
+        },
+        {
+            type: 'input',
+            message: 'Enter the new role',
+            name: 'role',
+        },
+    ]).then((value) => {
+        queries.updateEmployeeTable(value.employee_id, value.role);
+        main();
     })
 }
 
