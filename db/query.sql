@@ -1,3 +1,5 @@
+USE company_db;
+
 /* department names and department ids */
 SELECT * FROM company_db.departments;
 
