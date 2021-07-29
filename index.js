@@ -25,49 +25,101 @@ const Questions = {
 
 //!view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
 function init() {
-    questions();
+    main();
 }
 
-function questions() {
+function main() {
     inquirer.prompt([
     {
         type: 'list',
-        message: 'Do somthin',
+        message: 'Choose a table to interact with',
         name: 'choice',
         choices: Questions.main
     }
     ]).then((value) => {
-        console.log(value)
         switch(value.choice){
             case Questions.main[0]:
-                queries.selectDepartmentTable();
-                break
+                roles();
+                break;
             case Questions.main[1]:
-                queries.selectRolesTable();
-                break
+                roles();
+                break;
             case Questions.main[2]:
-                queries.selectEmployeesTable();
-                break
-            case Questions.main[3]:
-                //! function to get information about these inserts
-                queries.addEmployeesTable();
-                break
-            case Questions.main[4]:
-                //! function to get information about these inserts
-                queries.addRolesTable();
-                break
-            case Questions.main[5]:
-                //! function to get information about these inserts
-                queries.updateEmployeesTable();
-                break
+                employees();
+                break;
+            case Questions.main[2]:
+                process.abort();
+                break;
             default:
                 console.log("error in switch case index.js", value.name);
         }
-        if(value.choice != 'Quit'){
-            console.clear();
-            questions();
+    })
+}
+
+function departments() {
+    console.log("showing departments")
+    inquirer.prompt([
+    {
+        type: 'list',
+        message: 'What to do involving the Department Table',
+        name: 'choice',
+        choices: Questions.departments
+    }
+    ]).then((value) => {
+        switch(value.choice){
+            case Questions.departments[0]:
+                queries.selectEmployeesTable();
+                break;
+            case Questions.departments[1]:
+                break;
+            default:
+                console.log("error in switch case departments index.js", value.name);
         }
-        process.abort();
+        main();
+    })
+}
+
+function roles() {
+    inquirer.prompt([
+    {
+        type: 'list',
+        message: 'What to do involving the Roles Table',
+        name: 'choice',
+        choices: Questions.roles
+    }
+    ]).then((value) => {
+        switch(value.choice){
+            case Questions.roles[0]:
+                queries.selectRolesTable();
+                break;
+            case Questions.roles[1]:
+                break;
+            case Questions.roles[2]:
+                break;
+            default:
+                console.log("error in switch case index.js", value.name);
+        }
+    })
+}
+
+function employees() {
+    inquirer.prompt([
+    {
+        type: 'list',
+        message: 'What to do involving the Employees Table',
+        name: 'choice',
+        choices: Questions.employees
+    }
+    ]).then((value) => {
+        switch(value.choice){
+            case Questions.employees[0]:
+                queries.selectEmployeesTable();
+                break;
+            case Questions.employees[1]:
+                break;
+            default:
+                console.log("error in switch case index.js", value.name);
+        }
     })
 }
 
