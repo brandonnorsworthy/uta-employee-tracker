@@ -1,7 +1,23 @@
 const inquirer = require('inquirer');
 const queries = require('./lib/queries.js')
 
-const Questions = {
+//!view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
+
+const QuestionPrompts = {
+    main: 'Choose a table to interact with',
+    departments: [
+        'What to do involving the Department Table',
+        'Enter the name of the new Department',
+    ],
+    roles: [
+        'view roles',
+    ],
+    employees: [
+        'view employees',
+    ]
+}
+
+const ListChoices = {
     main: [
         'all departments',
         'view all roles',
@@ -23,31 +39,31 @@ const Questions = {
     ]
 }
 
-//!view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
 function init() {
     main();
 }
 
 function main() {
+    console.log('\n\n')
     inquirer.prompt([
     {
         type: 'list',
-        message: 'Choose a table to interact with',
+        message: QuestionPrompts.main,
         name: 'choice',
-        choices: Questions.main
+        choices: ListChoices.main
     }
     ]).then((value) => {
         switch(value.choice){
-            case Questions.main[0]:
+            case ListChoices.main[0]:
+                departments();
+                break;
+            case ListChoices.main[1]:
                 roles();
                 break;
-            case Questions.main[1]:
-                roles();
-                break;
-            case Questions.main[2]:
+            case ListChoices.main[2]:
                 employees();
                 break;
-            case Questions.main[2]:
+            case ListChoices.main[2]:
                 process.abort();
                 break;
             default:
@@ -57,24 +73,36 @@ function main() {
 }
 
 function departments() {
-    console.log("showing departments")
     inquirer.prompt([
     {
         type: 'list',
-        message: 'What to do involving the Department Table',
+        message: QuestionPrompts.departments[0],
         name: 'choice',
-        choices: Questions.departments
+        choices: ListChoices.departments
     }
     ]).then((value) => {
         switch(value.choice){
-            case Questions.departments[0]:
-                queries.selectEmployeesTable();
+            case ListChoices.departments[0]:
+                queries.selectDepartmentTable();
+                main();
                 break;
-            case Questions.departments[1]:
+            case ListChoices.departments[1]:
+                departmentAdd();
                 break;
             default:
                 console.log("error in switch case departments index.js", value.name);
         }
+    })
+}
+
+/* add a department */
+function departmentAdd() {
+    inquirer.prompt({
+        type: 'input',
+        message: QuestionPrompts.departments[1],
+        name: 'choice',
+    }).then((value) => {
+        queries.insertDepartmentsTable(value.choice);
         main();
     })
 }
@@ -85,16 +113,16 @@ function roles() {
         type: 'list',
         message: 'What to do involving the Roles Table',
         name: 'choice',
-        choices: Questions.roles
+        choices: ListChoices.roles
     }
     ]).then((value) => {
         switch(value.choice){
-            case Questions.roles[0]:
+            case ListChoices.roles[0]:
                 queries.selectRolesTable();
                 break;
-            case Questions.roles[1]:
+            case ListChoices.roles[1]:
                 break;
-            case Questions.roles[2]:
+            case ListChoices.roles[2]:
                 break;
             default:
                 console.log("error in switch case index.js", value.name);
@@ -108,14 +136,14 @@ function employees() {
         type: 'list',
         message: 'What to do involving the Employees Table',
         name: 'choice',
-        choices: Questions.employees
+        choices: ListChoices.employees
     }
     ]).then((value) => {
         switch(value.choice){
-            case Questions.employees[0]:
+            case ListChoices.employees[0]:
                 queries.selectEmployeesTable();
                 break;
-            case Questions.employees[1]:
+            case ListChoices.employees[1]:
                 break;
             default:
                 console.log("error in switch case index.js", value.name);
