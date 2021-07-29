@@ -118,6 +118,7 @@ function roles() {
         switch(value.choice){
             case ListChoices.roles[0]:
                 queries.selectRolesTable();
+                main();
                 break;
             case ListChoices.roles[1]:
                 roleAdd();
@@ -167,6 +168,7 @@ function employees() {
         switch(value.choice){
             case ListChoices.employees[0]:
                 queries.selectEmployeesTable();
+                main();
                 break;
             case ListChoices.employees[1]:
                 employeeAdd();
